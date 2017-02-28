@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="A layout example that shows off a responsive product landing page.">
-    <title>Landing Page &ndash; Layout Examples &ndash; Pure</title>
+    <title>Chick counter</title>
     
     <link rel="stylesheet" href="https://unpkg.com/purecss@0.6.2/build/pure-min.css" integrity="sha384-" crossorigin="anonymous">
     
@@ -27,11 +27,19 @@
 <body>
 <div class="header">
     <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
-        <a class="pure-menu-heading" href="">Your Site</a>
-
+        <a class="pure-menu-heading" href="">Chick counter</a>
+<!--
         <ul class="pure-menu-list">
-            <li class="pure-menu-item"><a href="#" class="pure-menu-link">Chicks</a></li>
+            <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+                <a href="#" id="menuLink1" class="pure-menu-link"></a>
+                <ul class="pure-menu-children">
+                    <li class="pure-menu-item"><a href="#" class="pure-menu-link">Email</a></li>
+                    <li class="pure-menu-item"><a href="#" class="pure-menu-link">Twitter</a></li>
+                    <li class="pure-menu-item"><a href="#" class="pure-menu-link">Tumblr Blog</a></li>
+                </ul>
+            </li>
         </ul>
+-->
     </div>
 </div>
 
@@ -39,60 +47,158 @@
     <div class="splash">
         <h1 class="splash-head">Chicks inside: NaN</h1>
         <p class="splash-subhead">
-            Hoe meer chicks in de keet, hoe groter het feestje
+            <i>Ain't Nobody Here But Us Chickens - Louis Jordan</i>
+
+            <script>
+                function play(){
+                    var audio = document.getElementById("audio");
+                    var icon = document.getElementById("play-button");
+
+                    if (audio.getAttribute("playing") == "False") {
+                        audio.play();
+                        audio.setAttribute("playing", "True");
+
+                        icon.className = "fa fa-pause";
+                    }
+                    else {
+                        audio.pause();
+                        audio.setAttribute("playing", "False");
+
+                        icon.className = "fa fa-play";
+                    }
+
+
+                }
+            </script>
+
+            <button class="button-choose pure-button" onclick="play()"><i id="play-button" class="fa fa-play"></i></button>
+            <audio playing="False" id="audio" src="audio/AintNobodyHereButUsChickens-LouisJordan.mp3" ></audio>
         </p>
     </div>
 </div>
 
 <div class="content-wrapper">
     <div class="content">
-        <h2 class="content-head is-center">Excepteur sint occaecat cupidatat.</h2>
+        <h2 class="content-head is-center">Your Chicks</h2>
 
         <div class="pure-g">
-            <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
 
-                <h3 class="content-subhead">
-                    <i class="fa fa-rocket"></i>
-                    Get Started Quickly
-                </h3>
-                <p>
-                    Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
-                </p>
+            <div class="pure-u-1 pure-u-md-1-4">
+                <div class="pricing-table pricing-table-free">
+                    <div class="pricing-table-header">
+                        <img class="chick-img" src="img/chick_1.jpg">
+                    </span>
+                    </div>
+
+                    <ul class="pricing-table-list">
+                        <li><b>Chicken Little</b></li>
+                        <li>Total eggs: ##</li>
+                        <li>Age: ##</li>
+                    </ul>
+
+                    <button class="button-choose pure-button"><i class="fa fa-pencil"></i> Edit</button>
+                </div>
             </div>
-            <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-                <h3 class="content-subhead">
-                    <i class="fa fa-mobile"></i>
-                    Responsive Layouts
-                </h3>
-                <p>
-                    Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
-                </p>
+
+            <div class="pure-u-1 pure-u-md-1-4">
+                <div class="pricing-table pricing-table-free">
+                    <div class="pricing-table-header">
+                        <img class="chick-img" src="img/chick_2.png">
+                        </span>
+                    </div>
+
+                    <ul class="pricing-table-list">
+                        <li><b>Marry Poopins</b></li>
+                        <li>Total eggs: ##</li>
+                        <li>Age: ##</li>
+                    </ul>
+
+                    <button class="button-choose pure-button"><i class="fa fa-pencil"></i> Edit</button>
+                </div>
             </div>
-            <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-                <h3 class="content-subhead">
-                    <i class="fa fa-th-large"></i>
-                    Modular
-                </h3>
-                <p>
-                    Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
-                </p>
+
+            <div class="pure-u-1 pure-u-md-1-4">
+                <div class="pricing-table pricing-table-free">
+                    <div class="pricing-table-header">
+                        <img class="chick-img" src="img/chick_3.jpg">
+                        </span>
+                    </div>
+
+                    <ul class="pricing-table-list">
+                        <li><b>Happy Feet</b></li>
+                        <li>Total eggs: ##</li>
+                        <li>Age: ##</li>
+                    </ul>
+
+                    <button class="button-choose pure-button"><i class="fa fa-pencil"></i> Edit</button>
+                </div>
             </div>
-            <div class="l-box pure-u-1 pure-u-md-1-2 pure-u-lg-1-4">
-                <h3 class="content-subhead">
-                    <i class="fa fa-check-square-o"></i>
-                    Plays Nice
-                </h3>
-                <p>
-                    Phasellus eget enim eu lectus faucibus vestibulum. Suspendisse sodales pellentesque elementum.
-                </p>
+
+            <div class="pure-u-1 pure-u-md-1-4">
+                <div class="pricing-table pricing-table-free">
+                    <div class="pricing-table-header">
+                        <img class="chick-img" src="img/chick_4.jpg">
+                        </span>
+                    </div>
+
+                    <ul class="pricing-table-list">
+                        <li><b>Tom</b></li>
+                        <li>Total eggs: ##</li>
+                        <li>Age: ##</li>
+                    </ul>
+
+                    <button class="button-choose pure-button"><i class="fa fa-pencil"></i> Edit</button>
+                </div>
             </div>
+
+
         </div>
     </div>
 
     <div class="ribbon l-box-lrg pure-g">
         <div class="l-box-lrg is-center pure-u-1 pure-u-md-1-2 pure-u-lg-2-5">
-            <img width="300" alt="File Icons" class="pure-img-responsive" src="img/common/file-icons.png">
+            <canvas></canvas>
+            <img id="sun" src="img/sun.png" style="visibility: hidden; display: none">
+            <img id="moon" src="img/moon.png" style="visibility: hidden; display: none">
         </div>
+
+        <script>
+            var d = new Date(); // for now
+            var hours = d.getHours();
+            var sunrise = 7; //Time in hours
+            var sunset = 21; //Time in hours
+
+            var ctx = document.querySelector("canvas").getContext("2d");
+
+            ctx.beginPath();
+            ctx.arc(ctx.canvas.width * 0.5,ctx.canvas.height,ctx.canvas.width * 0.4, 0,2*Math.PI);
+            ctx.stroke();
+
+            var img = document.getElementById("sun");
+            var sun = ctx.drawImage(img, 0, 0, 50, 50);
+
+            var img = document.getElementById("moon");
+            var moon = ctx.drawImage(img, ctx.canvas.width * 0.9 - 25, ctx.canvas.height - 25, 50, 50);
+
+            if (hours <= sunset && hours >= sunrise) {
+                //Sun is shining, move to appropriate position
+                //get position in radians
+                //half circle is devided in N pieces
+                var dayHours = sunset - sunrise;
+                var radians = Math.PI + hours/dayHours * Math.PI; //Nr of radians to move to the right
+                var x = Math.cos(radians) * ctx.canvas.width * 0.4 + ctx.canvas.width * 0.5;
+                var y = ctx.canvas.height - Math.sin(radians) * ctx.canvas.width * 0.4;
+
+                //sun.traslate(x,y);
+            }
+
+
+
+
+
+
+        </script>
+
         <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-3-5">
 
             <h2 class="content-head content-head-ribbon">Laboris nisi ut aliquip.</h2>
