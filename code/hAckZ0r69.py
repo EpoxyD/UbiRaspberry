@@ -1,48 +1,46 @@
 #!/usr/bin/python
 
+import sys
+import threading
+import time
 import pifacedigitalio
 
 # Set global variables
 chicks_amount   =   9   # total amount of chickens
 chicks_inside   =   0   # total amount of chickens currently in the coop
-
+rainbow         =   False
+exit_barrier = threading.Barrier(2)
 
 def switch_pressed(event):
-    global CHICKS_INSIDE
+    global chicks_inside
     
     event.chip.output_pins[event.pin_num].turn_on()
-    if event.pin_num == 0 and pifacedigital.switches[1].value == 0:
+    if event.pin_num == 0 and pfd.switches[1].value == 0:
         
-        while pifacedigital.switches[0].value == 1:
-            if pifacedigital.switches[1].value == 1:
+        while pfd.switches[0].value == 1:
+            if pfd.switches[1].value == 1:
                 #Chick went inside
-                CHICKS_INSIDE = CHICKS_INSIDE + 1
+                chicks_inside += 1
 
-                print "CHICKEN WENT INSIDE: " + str(CHICKS_INSIDE)
+                print("CHICKEN WENT INSIDE: " + str(chicks_inside))
 
                 break
 
 
-    if event.pin_num == 1 and pifacedigital.switches[0].value == 0:
+    if event.pin_num == 1 and pfd.switches[0].value == 0:
 
-        while pifacedigital.switches[1].value == 1:
-            if pifacedigital.switches[0].value == 1:
+        while pfd.switches[1].value == 1:
+            if pfd.switches[0].value == 1:
                 #Chick went outside
-                if CHICKS_INSIDE > 0:
-                    CHICKS_INSIDE = CHICKS_INSIDE - 1
+                if chicks_inside > 0:
+                    chicks_inside -= 1
 
-                print "CHICKEN WENT OUTSIDE: " + str(CHICKS_INSIDE)
+                print("CHICKEN WENT OUTSIDE: " + str(chicks_inside))
 
                 break
-
-
 
 def switch_unpressed(event):
     event.chip.output_pins[event.pin_num].turn_off()
-    if event.pin_num == 0:
-        BUTTON_0 = 0
-    if event.pin_num == 1:
-        BUTTON_0 = 0
 
 # Get the amount of chickens in the chicken coop
 def get_amount_of_chicks():
@@ -53,18 +51,26 @@ def set_amount_of_chicks(amount):
     global chicks_amount
     chicks_amount = amount
 
+def led_enable(event):
+    return 0
+
 # Main program, call lots of functions in here, no business logic pls.
 if __name__ == "__main__":
-    print get_amount_of_chicks()
+    print(get_amount_of_chicks())
     set_amount_of_chicks(12)
-    print get_amount_of_chicks()
+    print(get_amount_of_chicks())
 
-    pifacedigital = pifacedigitalio.PiFaceDigital()
+    pfd = pifacedigitalio.PiFaceDigital()
 
-    listener = pifacedigitalio.InputEventListener(chip=pifacedigital)
+    listener = pifacedigitalio.InputEventListener(chip=pfd)
 
-    for i in range(4):
-        listener.register(i, pifacedigitalio.IODIR_ON, switch_pressed)
-        listener.register(i, pifacedigitalio.IODIR_OFF, switch_unpressed)
+    #listener.register(0, pifacedigitalio.IODIR_ON, switch_pressed)
+    #listener.register(1, pifacedigitalio.IODIR_OFF, switch_unpressed)
+    listener.register(2,pifacedigitalio.IODIR_ON,led_enable)
 
     listener.activate()
+    exit_barrier.wait()  # program will wait here until exit_barrier releases
+    listener.deactivate()
+    sys.exit()
+
+
