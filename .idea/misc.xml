@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+<<<<<<< HEAD
   <component name="ClientPropertiesManager">
     <properties class="javax.swing.AbstractButton">
       <property name="hideActionText" class="java.lang.Boolean" />
@@ -39,4 +40,7 @@
     </properties>
   </component>
   <component name="ProjectRootManager" version="2" default="true" />
+=======
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 2.7.12 (/usr/bin/python2.7)" project-jdk-type="Python SDK" />
+>>>>>>> 84c2e54b2470445b72ba90f3dd89bf9701546888
 </project>
