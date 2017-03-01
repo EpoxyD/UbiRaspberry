@@ -25,6 +25,7 @@
         <!--<![endif]-->
 
     <script src="https://d3js.org/d3.v4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 </head>
 <body>
 <div class="header">
@@ -187,48 +188,95 @@
                 .attr("x", 0)
                 .attr("y", 0);
 
+            var sunrise; //Time in hours
+            var sunset; //Time in hours
 
-            var d = new Date(); // for now
-            var hours = d.getHours();
-            var sunrise = 7; //Time in hours
-            var sunset = 21; //Time in hours
 
-            if (hours <= sunset && hours >= sunrise) {
-                //Sun is shining, move to appropriate position
-                moon.attr('visibility', 'hidden');
-                //get position in radians
-                //half circle is devided in N pieces
-                var dayHours = sunset - sunrise;
-                var radians = Math.PI - (hours - sunrise)/dayHours * Math.PI; //Nr of radians to move to the right
-                var x = Math.cos(radians) * svg.attr('width')* 0.4 + svg.attr('width') * 0.5;
-                var y = svg.attr('height') - Math.sin(radians) * svg.attr('width') * 0.4;
+            jQuery.ajax({
+                url: "https://api.darksky.net/forecast/a22f23bee010f3976f614a0460d1ccf6/50.87296604411913,4.697816732888441",
+                type: "GET",
+                dataType: "jsonp",
+                beforeSend: function() {
 
-                sun.attr("transform", "translate(" + (x - sun.attr('width')/2) + "," + (y - sun.attr('height')/2)+ ")");
-                sun.attr('visibility', 'visible');
-            }
+                },
+                complete: function() {
 
-            else {
-                //Nighttime, move the moon to the appropriate position
-                sun.attr('visibility', 'hidden');
+                },
+                success: function(resultData) {
+                    var todaySunRise = new Date(resultData.daily.data[0].sunriseTime*1000);
+                    var todaySunSet = new Date(resultData.daily.data[0].sunsetTime*1000);
+                    var tomorrowSunRise = new Date(resultData.daily.data[1].sunriseTime*1000);
+                    var now = new Date();
 
-                var nightHours = sunrise + (24 - sunset);
-                if (hours <= 24 && hours >= sunset) {
-                    hours = hours - sunset;
+                    if (now >= todaySunSet && now <= tomorrowSunRise) {
+                        sunrise = tomorrowSunRise;
+                        sunset = todaySunSet;
+                    }
+                    else if (now <= todaySunSet && now >= todaySunRise) {
+                        sunrise = todaySunRise;
+                        sunset = todaySunSet;
+                    }
+                    else if (now <= todaySunRise) {
+                        sunrise = todaySunRise;
+                        sunset = todaySunSet;
+                    }
+
+                    sunrise = sunrise.getHours() + sunrise.getMinutes()/60;
+                    sunset = sunset.getHours() + sunset.getMinutes()/60;
+                    move_time(now);
+                    initTimer(sunrise, sunset);
+
+                },
+                error : function(jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus)
+                },
+
+                timeout: 120000
+            });
+
+
+
+
+
+            var move_time = function (hours) {
+                hours = hours.getHours() + hours.getMinutes()/60;
+
+                if (hours <= sunset && hours >= sunrise) {
+                    //Sun is shining, move to appropriate position
+                    moon.attr('visibility', 'hidden');
+                    //get position in radians
+                    //half circle is devided in N pieces
+                    var dayHours = sunset - sunrise;
+                    var radians = Math.PI - (hours - sunrise)/dayHours * Math.PI; //Nr of radians to move to the right
+                    var x = Math.cos(radians) * svg.attr('width')* 0.4 + svg.attr('width') * 0.5;
+                    var y = svg.attr('height') - Math.sin(radians) * svg.attr('width') * 0.4;
+
+                    sun.attr("transform", "translate(" + (x - sun.attr('width')/2) + "," + (y - sun.attr('height')/2)+ ")");
+                    sun.attr('visibility', 'visible');
                 }
+
                 else {
-                    hours = hours + (24 - sunset);
-                    console.log(hours);
+                    //Nighttime, move the moon to the appropriate position
+                    sun.attr('visibility', 'hidden');
+
+                    var nightHours = sunrise + (24 - sunset);
+                    if (hours <= 24 && hours >= sunset) {
+                        hours = hours - sunset;
+                    }
+                    else {
+                        hours = hours + (24 - sunset);
+                    }
+
+                    var radians = Math.PI - hours/nightHours * Math.PI; //Nr of radians to move to the right
+
+
+                    var x = Math.cos(radians) * svg.attr('width')* 0.4 + svg.attr('width') * 0.5;
+                    var y = svg.attr('height') - Math.sin(radians) * svg.attr('width') * 0.4;
+
+                    moon.attr("transform", "translate(" + (x - sun.attr('width')/2) + "," + (y - sun.attr('height')/2)+ ")");
+                    moon.attr('visibility', 'visible');
                 }
-
-                var radians = Math.PI - hours/nightHours * Math.PI; //Nr of radians to move to the right
-
-
-                var x = Math.cos(radians) * svg.attr('width')* 0.4 + svg.attr('width') * 0.5;
-                var y = svg.attr('height') - Math.sin(radians) * svg.attr('width') * 0.4;
-
-                moon.attr("transform", "translate(" + (x - sun.attr('width')/2) + "," + (y - sun.attr('height')/2)+ ")");
-                moon.attr('visibility', 'visible');
-            }
+            };
 
 
         </script>
@@ -261,7 +309,6 @@
                 var minutes = Math.floor((t / 1000 / 60) % 60);
                 var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
                 var days = Math.floor(t / (1000 * 60 * 60 * 24));
-                console.log(endtime);
                 return {
                     'total': t,
                     'days': days,
@@ -284,6 +331,8 @@
                     minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
                     secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
 
+                    move_time(new Date());
+
                     if (t.total <= 0) {
                         clearInterval(timeinterval);
                     }
@@ -293,69 +342,117 @@
                 var timeinterval = setInterval(updateClock, 1000);
             }
 
-            var now = new Date();
-            var hours = now.getHours();
-            var timeDiff = 0;
-            if (hours < 24 && hours > sunset) {
-                timeDiff += (60 - now.getSeconds()) * 1000; //seconds
-                timeDiff += (59 - now.getMinutes()) * 60 * 1000; //minutes
-                timeDiff += (23 - now.getHours() + sunrise) * 60 * 60 * 1000;//hours
-            }
-            else if(hours < sunrise) {
-                timeDiff += (60 - now.getSeconds()) * 1000; //seconds
-                timeDiff += (59 - now.getMinutes()) * 60 * 1000; //minutes
-                timeDiff += (sunrise - 1 - now.getHours()) * 60 * 60 * 1000;
-            }
-            else if (hours >= sunrise && hours <= sunset) {
-                timeDiff += (60 - now.getSeconds()) * 1000; //seconds
-                timeDiff += (59 - now.getMinutes()) * 60 * 1000; //minutes
-                timeDiff += (sunset - 1 - now.getHours()) * 60 * 60 * 1000;//hours
+            function initTimer(sunrise, sunset) {
+                var now = new Date();
+                var hours = now.getHours();
+                console.log(sunrise);
+                console.log(sunset);
+                var timeDiff = 0;
+                if (hours < 24 && hours > sunset) {
+                    timeDiff += (60 - now.getSeconds()) * 1000; //seconds
+                    timeDiff += (59 - now.getMinutes()) * 60 * 1000; //minutes
+                    timeDiff += (23 - now.getHours() + sunrise) * 60 * 60 * 1000;//hours
+                }
+                else if(hours < sunrise) {
+                    timeDiff += (60 - now.getSeconds()) * 1000; //seconds
+                    timeDiff += (59 - now.getMinutes()) * 60 * 1000; //minutes
+                    timeDiff += (sunrise - 1 - now.getHours()) * 60 * 60 * 1000;
+                }
+                else if (hours >= sunrise && hours <= sunset) {
+                    timeDiff += (60 - now.getSeconds()) * 1000; //seconds
+                    timeDiff += (59 - now.getMinutes()) * 60 * 1000; //minutes
+                    timeDiff += (sunset - 1 - now.getHours()) * 60 * 60 * 1000;//hours
+                }
+
+                var deadline = new Date(Date.parse(new Date()) + timeDiff);
+                initializeClock('clockdiv', deadline);
             }
 
-            console.log(timeDiff);
-            var deadline = new Date(Date.parse(new Date()) + timeDiff);
-            initializeClock('clockdiv', deadline);
         </script>
     </div>
 
-    <div class="content">
-        <h2 class="content-head is-center">Recipe of the day</h2>
+    <div id="loading" class="content" style="text-align: center">
+        <h2 class="content-head is-center">Loading recipe of the day</h2>
+        <div class="loader" style="display: inline-block; margin-top: 20px"></div>
+    </div>
+
+    <div id="dailyRecipe" class="content" style="visibility: hidden; display: none">
+        <h2 id="recipeLabel" class="content-head is-center">Recipe of the day - Soft boiled eggs</h2>
+
+        <script>
+
+            jQuery.ajax({
+                url: "https://api.edamam.com/search?q=egg&app_id=a8f2a628&app_key=7f84264a24ce3ab457a4e97e5837dc6e&from=0&to=100",
+                type: "GET",
+
+                contentType: 'application/json; charset=utf-8',
+                beforeSend: function() {
+                    //... your initialization code here (so show loader) ...
+                },
+                complete: function() {
+                    var loading = document.getElementById('loading');
+                    loading.setAttribute('style', 'visibility: hidden; display: none');
+
+                    var dailyRecipe = document.getElementById('dailyRecipe');
+                    dailyRecipe.setAttribute('style', 'visibility: visible;');
+                },
+                success: function(resultData) {
+                    var totalRecipees = resultData.hits.length;
+                    var randID = Math.floor(Math.random() * (totalRecipees));
+
+                    var randRecipee = resultData.hits[randID].recipe;
+
+                    var img = document.getElementById("recipeImg");
+                    img.setAttribute("src", randRecipee.image);
+
+                    var label = document.getElementById("recipeLabel");
+                    label.innerText = "Recipe of the day - " + randRecipee.label;
+
+                    var ingredients = randRecipee.ingredientLines;
+                    var list = document.getElementById("ingrediënts");
+
+                    for (var i = 0; i < ingredients.length; i++) {
+                        var listItem = document.createElement("li");
+                        listItem.appendChild(document.createTextNode(ingredients[i]));
+                        list.appendChild(listItem);
+                    }
+
+                    var tags = randRecipee.healthLabels;
+                    var taglist = document.getElementById("tags");
+
+                    var html = '';
+                    for (i = 0; i < tags.length; i++) {
+                         html += '<div class="chip">' + tags[i] + '</div>';
+                    }
+                    taglist.innerHTML = html;
+
+                },
+                error : function(jqXHR, textStatus, errorThrown) {
+                    console.log(textStatus)
+                },
+
+                timeout: 120000
+            });
+
+        </script>
 
         <div class="pure-g">
-            <div class="l-box-lrg pure-u-1 pure-u-md-2-5">
-                <form class="pure-form pure-form-stacked">
-                    <fieldset>
-
-                        <label for="name">Your Name</label>
-                        <input id="name" type="text" placeholder="Your Name">
-
-
-                        <label for="email">Your Email</label>
-                        <input id="email" type="email" placeholder="Your Email">
-
-                        <label for="password">Your Password</label>
-                        <input id="password" type="password" placeholder="Your Password">
-
-                        <button type="submit" class="pure-button">Sign Up</button>
-                    </fieldset>
-                </form>
-            </div>
 
             <div class="l-box-lrg pure-u-1 pure-u-md-3-5">
-                <h4>Contact Us</h4>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                    consequat.
-                </p>
+                <h4>Ingrediënts</h4>
 
-                <h4>More Information</h4>
-                <p>
-                    Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                    tempor incididunt ut labore et dolore magna aliqua.
-                </p>
+                <ul id="ingrediënts">
+                </ul>
+
+                <h4>Labels</h4>
+                <div id="tags">
+                </div>
             </div>
+
+            <div class="l-box-lrg pure-u-1 pure-u-md-2-5">
+                <img id="recipeImg" class="chick-img" src="img/egg.jpg"/>
+            </div>
+
         </div>
     </div>
 </div>
