@@ -23,6 +23,8 @@
         <!--[if gt IE 8]><!-->
             <link rel="stylesheet" href="css/layouts/marketing.css">
         <!--<![endif]-->
+
+    <script src="https://d3js.org/d3.v4.min.js"></script>
 </head>
 <body>
 <div class="header">
@@ -156,64 +158,168 @@
     </div>
 
     <div class="ribbon l-box-lrg pure-g">
-        <div class="l-box-lrg is-center pure-u-1 pure-u-md-1-2 pure-u-lg-2-5">
-            <canvas></canvas>
-            <img id="sun" src="img/sun.png" style="visibility: hidden; display: none">
-            <img id="moon" src="img/moon.png" style="visibility: hidden; display: none">
+        <div id="day-night" class="l-box-lrg is-center pure-u-1 pure-u-md-1-2 pure-u-lg-2-5" style="margin-top: -4%">
+
         </div>
 
         <script>
+
+            var svg = d3.select('#day-night').append('svg').attr('width', 422).attr('height', 200);
+
+            svg.append("circle")
+                .style("stroke", "white")
+                .style("fill", "none")
+                .attr("r", svg.attr('width') * 0.4)
+                .attr("cx", svg.attr('width') * 0.5)
+                .attr("cy", svg.attr('height'));
+
+            var sun = svg.append('image')
+                .attr('xlink:href', 'img/sun.png')
+                .attr("width", 50)
+                .attr("height", 50)
+                .attr("x", 0)
+                .attr("y", 0);
+
+            var moon = svg.append('image')
+                .attr('xlink:href', 'img/moon.png')
+                .attr("width", 50)
+                .attr("height", 50)
+                .attr("x", 0)
+                .attr("y", 0);
+
+
             var d = new Date(); // for now
             var hours = d.getHours();
             var sunrise = 7; //Time in hours
             var sunset = 21; //Time in hours
 
-            var ctx = document.querySelector("canvas").getContext("2d");
-
-            ctx.beginPath();
-            ctx.arc(ctx.canvas.width * 0.5,ctx.canvas.height,ctx.canvas.width * 0.4, 0,2*Math.PI);
-            ctx.stroke();
-
-            var img = document.getElementById("sun");
-            var sun = ctx.drawImage(img, 0, 0, 50, 50);
-
-            var img = document.getElementById("moon");
-            var moon = ctx.drawImage(img, ctx.canvas.width * 0.9 - 25, ctx.canvas.height - 25, 50, 50);
-
             if (hours <= sunset && hours >= sunrise) {
                 //Sun is shining, move to appropriate position
+                moon.attr('visibility', 'hidden');
                 //get position in radians
                 //half circle is devided in N pieces
                 var dayHours = sunset - sunrise;
-                var radians = Math.PI + hours/dayHours * Math.PI; //Nr of radians to move to the right
-                var x = Math.cos(radians) * ctx.canvas.width * 0.4 + ctx.canvas.width * 0.5;
-                var y = ctx.canvas.height - Math.sin(radians) * ctx.canvas.width * 0.4;
+                var radians = Math.PI - (hours - sunrise)/dayHours * Math.PI; //Nr of radians to move to the right
+                var x = Math.cos(radians) * svg.attr('width')* 0.4 + svg.attr('width') * 0.5;
+                var y = svg.attr('height') - Math.sin(radians) * svg.attr('width') * 0.4;
 
-                //sun.traslate(x,y);
+                sun.attr("transform", "translate(" + (x - sun.attr('width')/2) + "," + (y - sun.attr('height')/2)+ ")");
+                sun.attr('visibility', 'visible');
             }
 
+            else {
+                //Nighttime, move the moon to the appropriate position
+                sun.attr('visibility', 'hidden');
+
+                var nightHours = sunrise + (24 - sunset);
+                if (hours <= 24 && hours >= sunset) {
+                    hours = hours - sunset;
+                }
+                else {
+                    hours = hours + (24 - sunset);
+                    console.log(hours);
+                }
+
+                var radians = Math.PI - hours/nightHours * Math.PI; //Nr of radians to move to the right
 
 
+                var x = Math.cos(radians) * svg.attr('width')* 0.4 + svg.attr('width') * 0.5;
+                var y = svg.attr('height') - Math.sin(radians) * svg.attr('width') * 0.4;
 
+                moon.attr("transform", "translate(" + (x - sun.attr('width')/2) + "," + (y - sun.attr('height')/2)+ ")");
+                moon.attr('visibility', 'visible');
+            }
 
 
         </script>
 
-        <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-3-5">
+        <div class="pure-u-1 pure-u-md-1-2 pure-u-lg-3-5" style="text-align: center; margin-top: -3%">
 
-            <h2 class="content-head content-head-ribbon">Laboris nisi ut aliquip.</h2>
+            <h2 class="content-head content-head-ribbon">Chickens are brave till the foxes <br> come at night</h2>
 
-            <p>
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-                tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-                consequat. Duis aute irure dolor.
-            </p>
+            <div class="pure-u-1" id="clockdiv">
+                <div class="pure-u-1-4">
+                    <span class="hours"></span>
+                    <div class="smalltext">Hours</div>
+                </div>
+                <div class="pure-u-1-4">
+                    <span class="minutes"></span>
+                    <div class="smalltext">Minutes</div>
+                </div>
+                <div class="pure-u-1-4">
+                    <span class="seconds"></span>
+                    <div class="smalltext">Seconds</div>
+                </div>
+            </div>
+
         </div>
+
+        <script>
+            function getTimeRemaining(endtime) {
+                var t = Date.parse(endtime) - Date.parse(new Date());
+                var seconds = Math.floor((t / 1000) % 60);
+                var minutes = Math.floor((t / 1000 / 60) % 60);
+                var hours = Math.floor((t / (1000 * 60 * 60)) % 24);
+                var days = Math.floor(t / (1000 * 60 * 60 * 24));
+                console.log(endtime);
+                return {
+                    'total': t,
+                    'days': days,
+                    'hours': hours,
+                    'minutes': minutes,
+                    'seconds': seconds
+                };
+            }
+
+            function initializeClock(id, endtime) {
+                var clock = document.getElementById(id);
+                var hoursSpan = clock.querySelector('.hours');
+                var minutesSpan = clock.querySelector('.minutes');
+                var secondsSpan = clock.querySelector('.seconds');
+
+                function updateClock() {
+                    var t = getTimeRemaining(endtime);
+
+                    hoursSpan.innerHTML = ('0' + t.hours).slice(-2);
+                    minutesSpan.innerHTML = ('0' + t.minutes).slice(-2);
+                    secondsSpan.innerHTML = ('0' + t.seconds).slice(-2);
+
+                    if (t.total <= 0) {
+                        clearInterval(timeinterval);
+                    }
+                }
+
+                updateClock();
+                var timeinterval = setInterval(updateClock, 1000);
+            }
+
+            var now = new Date();
+            var hours = now.getHours();
+            var timeDiff = 0;
+            if (hours < 24 && hours > sunset) {
+                timeDiff += (60 - now.getSeconds()) * 1000; //seconds
+                timeDiff += (59 - now.getMinutes()) * 60 * 1000; //minutes
+                timeDiff += (23 - now.getHours() + sunrise) * 60 * 60 * 1000;//hours
+            }
+            else if(hours < sunrise) {
+                timeDiff += (60 - now.getSeconds()) * 1000; //seconds
+                timeDiff += (59 - now.getMinutes()) * 60 * 1000; //minutes
+                timeDiff += (sunrise - 1 - now.getHours()) * 60 * 60 * 1000;
+            }
+            else if (hours >= sunrise && hours <= sunset) {
+                timeDiff += (60 - now.getSeconds()) * 1000; //seconds
+                timeDiff += (59 - now.getMinutes()) * 60 * 1000; //minutes
+                timeDiff += (sunset - 1 - now.getHours()) * 60 * 60 * 1000;//hours
+            }
+
+            console.log(timeDiff);
+            var deadline = new Date(Date.parse(new Date()) + timeDiff);
+            initializeClock('clockdiv', deadline);
+        </script>
     </div>
 
     <div class="content">
-        <h2 class="content-head is-center">Dolore magna aliqua. Uis aute irure.</h2>
+        <h2 class="content-head is-center">Recipe of the day</h2>
 
         <div class="pure-g">
             <div class="l-box-lrg pure-u-1 pure-u-md-2-5">
