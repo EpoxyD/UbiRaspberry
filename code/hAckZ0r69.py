@@ -2,7 +2,6 @@
 
 import sys
 import threading
-import time
 import pifacedigitalio
 
 # Set global variables
@@ -21,9 +20,7 @@ def switch_pressed(event):
             if pfd.switches[1].value == 1:
                 #Chick went inside
                 chicks_inside += 1
-
                 print("CHICKEN WENT INSIDE: " + str(chicks_inside))
-
                 break
 
 
@@ -34,9 +31,7 @@ def switch_pressed(event):
                 #Chick went outside
                 if chicks_inside > 0:
                     chicks_inside -= 1
-
                 print("CHICKEN WENT OUTSIDE: " + str(chicks_inside))
-
                 break
 
 def switch_unpressed(event):
@@ -54,6 +49,10 @@ def set_amount_of_chicks(amount):
 def led_enable(event):
     return 0
 
+def deactivate_and_exit(event):
+    global exit_barrier
+    exit_barrier.wait()
+
 # Main program, call lots of functions in here, no business logic pls.
 if __name__ == "__main__":
     print(get_amount_of_chicks())
@@ -64,9 +63,22 @@ if __name__ == "__main__":
 
     listener = pifacedigitalio.InputEventListener(chip=pfd)
 
-    #listener.register(0, pifacedigitalio.IODIR_ON, switch_pressed)
-    #listener.register(1, pifacedigitalio.IODIR_OFF, switch_unpressed)
+    listener.register(0, pifacedigitalio.IODIR_ON, switch_pressed)
+    listener.register(1, pifacedigitalio.IODIR_OFF, switch_unpressed)
     listener.register(2,pifacedigitalio.IODIR_ON,led_enable)
+    listener.register(3,pifacedigitalio.IODIR_FALLING_EDGE, deactivate_and_exit)
+
+    i = 0
+    while i < 10:
+        pfd.leds[0].toggle()
+        pfd.leds[1].toggle()
+        pfd.leds[2].toggle()
+        pfd.leds[3].toggle()
+        pfd.leds[4].toggle()
+        pfd.leds[5].toggle()
+        pfd.leds[6].toggle()
+        pfd.leds[7].toggle()
+        i += 1
 
     listener.activate()
     exit_barrier.wait()  # program will wait here until exit_barrier releases
