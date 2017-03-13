@@ -424,8 +424,24 @@ function removeChicks(button) {
     //TODO: remove chicks from db
 }
 
+var insertID = 5;
 function addChicks(card){
     console.log(card);
+
+    //TODO: add to db and get insert ID
+
+    var demoCard = document.getElementById('demoChick');
+    var wrapper = demoCard.parentNode;
+    var newCard = demoCard.cloneNode(true);
+
+    newCard.setAttribute('id', 'chick' + insertID);
+    newCard.style.visibility = '';
+    newCard.style.display = '';
+
+    //TODO: Change chick properties and their id's
+
+    wrapper.appendChild(newCard);
+    wrapper.insertBefore(newCard, document.getElementById('addButton'));
 
     //TODO: add chick
 }
