@@ -65,6 +65,27 @@
     <div class="content">
         <h2 class="content-head is-center" style="width: 100%">Your Chicks</h2>
         <div class="pure-g">
+            <div id="demoChick" class="pure-u-1 pure-u-md-1-4" style="visibility: hidden; display: none">
+                <div class="pricing-table pricing-table-free">
+                    <div class="pricing-table-header">
+                        <img id="demo_img" class="chick-img" src="img/chick_1.jpg">
+                        </span>
+                    </div>
+
+                    <ul class="pricing-table-list">
+                        <li><b id="demo_name">Chicken Little</b></li>
+                        <li id="demo_race">Race: ##</li>
+                        <li id="demi_age">Age: ##</li>
+                    </ul>
+
+                    <div style="text-align: center;">
+                        <a href="#myModal" role="button" class="button-choose pure-button" data-toggle="modal" onclick="fillModal(this)">
+                            <i class="fa fa-pencil"></i> Edit
+                        </a>
+                        <button class="button-choose pure-button" style="border: 1px solid #ca3c3c" onclick="removeChicks(this)"><i class="fa fa-cutlery"></i> Remove</button>
+                    </div>
+                </div>
+            </div>
 
             <div id="chick1" class="pure-u-1 pure-u-md-1-4">
                 <div class="pricing-table pricing-table-free">
@@ -80,10 +101,10 @@
                     </ul>
 
                     <div style="text-align: center;">
-                        <a href="#myModal" role="button" class="button-choose pure-button" data-toggle="modal" onclick="fillModal(document.getElementById('chick1'))">
+                        <a href="#myModal" role="button" class="button-choose pure-button" data-toggle="modal" onclick="fillModal(this)">
                             <i class="fa fa-pencil"></i> Edit
                         </a>
-                        <button class="button-choose pure-button" style="border: 1px solid #ca3c3c"><i class="fa fa-cutlery"></i> Remove</button>
+                        <button class="button-choose pure-button" style="border: 1px solid #ca3c3c" onclick="removeChicks(this)"><i class="fa fa-cutlery"></i> Remove</button>
                     </div>
                 </div>
             </div>
@@ -102,10 +123,10 @@
                     </ul>
 
                     <div style="text-align: center;">
-                        <a href="#myModal" role="button" class="button-choose pure-button" data-toggle="modal" onclick="fillModal(document.getElementById('chick2'))">
+                        <a href="#myModal" role="button" class="button-choose pure-button" data-toggle="modal" onclick="fillModal(this)">
                             <i class="fa fa-pencil"></i> Edit
                         </a>
-                        <button class="button-choose pure-button" style="border: 1px solid #ca3c3c"><i class="fa fa-cutlery"></i> Remove</button>
+                        <button class="button-choose pure-button" style="border: 1px solid #ca3c3c" onclick="removeChicks(this)"><i class="fa fa-cutlery"></i> Remove</button>
                     </div>
                 </div>
             </div>
@@ -124,10 +145,10 @@
                     </ul>
 
                     <div style="text-align: center;">
-                        <a href="#myModal" role="button" class="button-choose pure-button" data-toggle="modal" onclick="fillModal(document.getElementById('chick3'))">
+                        <a href="#myModal" role="button" class="button-choose pure-button" data-toggle="modal" onclick="fillModal(this)">
                             <i class="fa fa-pencil"></i> Edit
                         </a>
-                        <button class="button-choose pure-button" style="border: 1px solid #ca3c3c"><i class="fa fa-cutlery"></i> Remove</button>
+                        <button class="button-choose pure-button" style="border: 1px solid #ca3c3c" onclick="removeChicks(this)"><i class="fa fa-cutlery"></i> Remove</button>
                     </div>
                 </div>
             </div>
@@ -146,16 +167,16 @@
                     </ul>
 
                     <div style="text-align: center;">
-                        <a href="#myModal" role="button" class="button-choose pure-button" data-toggle="modal" onclick="fillModal(document.getElementById('chick4'))">
+                        <a href="#myModal" role="button" class="button-choose pure-button" data-toggle="modal" onclick="fillModal(this)">
                             <i class="fa fa-pencil"></i> Edit
                         </a>
-                        <button class="button-choose pure-button" style="border: 1px solid #ca3c3c"><i class="fa fa-cutlery"></i> Remove</button>
+                        <button class="button-choose pure-button" style="border: 1px solid #ca3c3c" onclick="removeChicks(this)"><i class="fa fa-cutlery"></i> Remove</button>
                     </div>
                 </div>
             </div>
 
             <div class="pure-u-1 pure-u-md-2-4 is-center">
-                <button class="button-play pure-button" style="border-radius: 5px; margin-top: -30px; margin-bottom: 20px; border: 1px solid #1970a9; background: #1f8dd6;color: white; width: 50%"><i class="fa fa-plus"></i> Add</button>
+                <a href="#addModal" data-toggle="modal" class="button-play pure-button" style="border-radius: 5px; margin-top: -30px; margin-bottom: 20px; border: 1px solid #1970a9; background: #1f8dd6;color: white; width: 50%"><i class="fa fa-plus"></i> Add</a>
             </div>
 
         </div>
@@ -219,7 +240,7 @@
 </div>
 
 <!--
-    Modal
+    Edit Modal
 -->
 
 <div id="myModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -261,6 +282,46 @@
         <button class="pure-button pure-button-primary" data-dismiss="modal" onclick="saveEdit(document.getElementById('chickid').innerText)">Submit</button>
     </div>
 </div>
+
+
+<!--
+    Add Modal
+-->
+
+<div id="addModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+
+    <div class="modal-header">
+        <h1 id="addModalLabel">Edit chick passport</h1>
+    </div>
+
+    <div id="add_modal" class="modal-body">
+        <div class="pure-u-1">
+            <div class="pricing-table pricing-table-free" style="padding-bottom: 0">
+                <div class="pricing-table-header">
+                    <img id="addImage" class="chick-img" src="img/chick_1.jpg">
+                    </span>
+                </div>
+
+                <form id="addform" class="pure-form">
+                    <p id="addchickid" class="hide" >chickid</p>
+                    <ul class="pricing-table-list">
+                        <li><input id="addname" type="text" placeholder="Name"></li>
+                        <li><input id="addrace" type="text" placeholder="Race"></li>
+                        <li><input id="addage" type="text" placeholder="Age"></li>
+                    </ul>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button class="pure-button" data-dismiss="modal" aria-hidden="true">Close</button>
+        <button class="pure-button pure-button-primary" data-dismiss="modal" onclick="addChicks(document.getElementById('add_modal'))">Submit</button>
+    </div>
+</div>
+
+
+
 <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/js/bootstrap.min.js"></script>
 
 

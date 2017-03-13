@@ -366,7 +366,9 @@ function init_recipe(){
  *  Functions to fill modal on edit
  */
 
-function fillModal(chickPassport) {
+function fillModal(button) {
+    chickPassport = button.parentNode.parentNode.parentNode;
+
     var modal = document.getElementById("modal");
 
     var image = document.getElementById("image");
@@ -377,8 +379,6 @@ function fillModal(chickPassport) {
 
     var chick = chickPassport.getAttribute("id");
     id.innerHTML = chick;
-
-    console.log(id);
 
     name.placeholder = document.getElementById(chick + "_name").innerText;
     race.placeholder = document.getElementById(chick + "_race").innerText;
@@ -416,9 +416,18 @@ function saveEdit(chickid) {
     //TODO: Store Chicks in database
 }
 
+function removeChicks(button) {
+    id = button.parentNode.parentNode.parentNode.getAttribute("id");
 
+    $("#"+id).remove();
+
+    //TODO: remove chicks from db
+}
+
+function addChicks(card){
+    console.log(card);
+}
 //TODO: add chick
-//TODO: remove chick
 
 
 $( document ).ready(function() {
