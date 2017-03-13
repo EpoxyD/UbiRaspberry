@@ -426,8 +426,10 @@ function removeChicks(button) {
 
 function addChicks(card){
     console.log(card);
+
+    //TODO: add chick
 }
-//TODO: add chick
+
 
 
 $( document ).ready(function() {

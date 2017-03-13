@@ -49,8 +49,8 @@
       <file leaf-file-name="chicks.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/html/js/chicks.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="515">
-              <caret line="427" column="4" lean-forward="true" selection-start-line="427" selection-start-column="4" selection-end-line="427" selection-end-column="22" />
+            <state relative-caret-position="590">
+              <caret line="432" column="0" lean-forward="true" selection-start-line="432" selection-start-column="0" selection-end-line="432" selection-end-column="0" />
               <folding />
             </state>
           </provider>
@@ -641,12 +641,12 @@
       <workItem from="1488312876649" duration="36442000" />
       <workItem from="1488532176931" duration="6832000" />
       <workItem from="1488743345650" duration="6654000" />
-      <workItem from="1489410284493" duration="6650000" />
+      <workItem from="1489410284493" duration="6721000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="56578000" />
+    <option name="totallyTimeSpent" value="56649000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
@@ -886,8 +886,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/html/js/chicks.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="515">
-          <caret line="427" column="4" lean-forward="true" selection-start-line="427" selection-start-column="4" selection-end-line="427" selection-end-column="22" />
+        <state relative-caret-position="590">
+          <caret line="432" column="0" lean-forward="true" selection-start-line="432" selection-start-column="0" selection-end-line="432" selection-end-column="0" />
           <folding />
         </state>
       </provider>
