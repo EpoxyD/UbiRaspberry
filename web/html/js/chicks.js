@@ -38,8 +38,6 @@ function init_svg() {
         .attr('height', (parentWidth-26-26)/2)
         .attr('id', "svg");
 
-    console.log((parentWidth-26-26)/2);
-
     svg.append("circle")
         .style("stroke", "white")
         .style("fill", "none")
@@ -62,12 +60,16 @@ function init_svg() {
         .attr("x", 0)
         .attr("y", 0)
         .attr("id", "moon");
+
+
 }
 
 /*
  *  Getting the sunrise and sunset times
  */
 
+var sunriseDT; //Date object
+var sunsetDT; //Date object
 var sunrise; //Time in hours
 var sunset; //Time in hours
 
@@ -89,20 +91,74 @@ function init_sun_moon(){
             var now = new Date();
 
             if (now >= todaySunSet && now <= tomorrowSunRise) {
-                sunrise = tomorrowSunRise;
-                sunset = todaySunSet;
+                sunriseDT = tomorrowSunRise;
+                sunsetDT = todaySunSet;
+
+                var svg = d3.select("#svg");
+                svg.append('text')
+                    .attr("x", svg.attr('width') * 0.12 )
+                    .attr("y", svg.attr('height'))
+                    .text( ('0' + sunsetDT.getHours()).slice(-2) + 'h' + ('0' + sunsetDT.getMinutes()).slice(-2))
+                    .attr("font-size", "14px")
+                    .attr("font-family", 'sans-serif')
+                    .attr("fill", "white");
+
+                svg.append('text')
+                    .attr("x", svg.attr('width') * 0.88 )
+                    .attr("y", svg.attr('height'))
+                    .text( ('0' + sunriseDT.getHours()).slice(-2) + 'h' + ('0' + sunriseDT.getMinutes()).slice(-2))
+                    .attr("text-anchor", "end")
+                    .attr("font-size", "14px")
+                    .attr("font-family", 'sans-serif')
+                    .attr("fill", "white");
             }
             else if (now <= todaySunSet && now >= todaySunRise) {
-                sunrise = todaySunRise;
-                sunset = todaySunSet;
+                sunriseDT = todaySunRise;
+                sunsetDT = todaySunSet;
+
+                var svg = d3.select("#svg");
+                svg.append('text')
+                    .attr("x", svg.attr('width') * 0.12 )
+                    .attr("y", svg.attr('height'))
+                    .text( ('0' + sunriseDT.getHours()).slice(-2) + 'h' + ('0' + sunriseDT.getMinutes()).slice(-2))
+                    .attr("font-size", "14px")
+                    .attr("font-family", 'sans-serif')
+                    .attr("fill", "white");
+
+                svg.append('text')
+                    .attr("x", svg.attr('width') * 0.88 )
+                    .attr("y", svg.attr('height'))
+                    .text( ('0' + sunsetDT.getHours()).slice(-2) + 'h' + ('0' + sunsetDT.getMinutes()).slice(-2))
+                    .attr("text-anchor", "end")
+                    .attr("font-size", "14px")
+                    .attr("font-family", 'sans-serif')
+                    .attr("fill", "white");
             }
             else if (now <= todaySunRise) {
-                sunrise = todaySunRise;
-                sunset = todaySunSet;
+                sunriseDT = todaySunRise;
+                sunsetDT = todaySunSet;
+
+                var svg = d3.select("#svg");
+                svg.append('text')
+                    .attr("x", svg.attr('width') * 0.12 )
+                    .attr("y", svg.attr('height'))
+                    .text( ('0' + sunsetDT.getHours()).slice(-2) + 'h' + ('0' + sunsetDT.getMinutes()).slice(-2))
+                    .attr("font-size", "14px")
+                    .attr("font-family", 'sans-serif')
+                    .attr("fill", "white");
+
+                svg.append('text')
+                    .attr("x", svg.attr('width') * 0.88 )
+                    .attr("y", svg.attr('height'))
+                    .text( ('0' + sunriseDT.getHours()).slice(-2) + 'h' + ('0' + sunriseDT.getMinutes()).slice(-2))
+                    .attr("text-anchor", "end")
+                    .attr("font-size", "14px")
+                    .attr("font-family", 'sans-serif')
+                    .attr("fill", "white");
             }
 
-            sunrise = sunrise.getHours() + sunrise.getMinutes()/60;
-            sunset = sunset.getHours() + sunset.getMinutes()/60;
+            sunrise = sunriseDT.getHours() + sunriseDT.getMinutes()/60;
+            sunset = sunsetDT.getHours() + sunsetDT.getMinutes()/60;
             move_time(now);
             initTimer(sunrise, sunset);
 
@@ -194,6 +250,7 @@ function initializeClock(id, endtime) {
     var minutesSpan = clock.querySelector('.minutes');
     var secondsSpan = clock.querySelector('.seconds');
 
+    var stop = false;
     function updateClock() {
         var t = getTimeRemaining(endtime);
 
@@ -204,19 +261,25 @@ function initializeClock(id, endtime) {
         move_time(new Date());
 
         if (t.total <= 0) {
-            clearInterval(timeinterval);
+            //setTimeout(initTimer, 10000);
+            stop = true;
         }
     }
 
-    updateClock();
-    var timeinterval = setInterval(updateClock, 1000);
+    if (stop) {
+        setTimeout(init_sun_moon(), 10000);
+    }
+    else {
+        updateClock();
+        var timeinterval = setInterval(updateClock, 1000);
+    }
+
 }
 
 function initTimer(sunrise, sunset) {
     var now = new Date();
     var hours = now.getHours();
-    console.log(sunrise);
-    console.log(sunset);
+
     var timeDiff = 0;
     if (hours < 24 && hours > sunset) {
         timeDiff += (60 - now.getSeconds()) * 1000; //seconds
@@ -299,10 +362,62 @@ function init_recipe(){
 }
 
 
+/*
+ *  Functions to fill modal on edit
+ */
+
+function fillModal(chickPassport) {
+    var modal = document.getElementById("modal");
+
+    var image = document.getElementById("image");
+    var name = document.getElementById("name");
+    var race = document.getElementById("race");
+    var age = document.getElementById("age");
+    var id = document.getElementById("chickid");
+
+    var chick = chickPassport.getAttribute("id");
+    id.innerHTML = chick;
+
+    console.log(id);
+
+    name.placeholder = document.getElementById(chick + "_name").innerText;
+    race.placeholder = document.getElementById(chick + "_race").innerText;
+    age.placeholder = document.getElementById(chick + "_age").innerText;
+    image.setAttribute("src", document.getElementById(chick + "_img").getAttribute("src"));
+}
+
+function saveEdit(chickid) {
+
+    console.log(chickid);
+    var imageModal = document.getElementById("image");
+    var nameModal = document.getElementById("name");
+    var raceModal = document.getElementById("race");
+    var ageModal = document.getElementById("age");
+
+    if (nameModal.value != null && nameModal.value != "") {
+        document.getElementById(chickid + "_name").innerText = nameModal.value;
+    }
+    if (raceModal.value != null && raceModal.value != "") {
+        document.getElementById(chickid + "_race").innerText = "Race: " + raceModal.value;
+    }
+    if (ageModal.value != null && ageModal.value != "") {
+        document.getElementById(chickid + "_age").innerText = "Age: " + ageModal.value;
+    }
+
+    document.getElementById(chickid + "_img").setAttribute("src", imageModal.getAttribute("src"));
+
+    //Clear input fields
+    var form = document.getElementById("myform");
+    form.reset();
 
 
 
+    //TODO: Store Chicks in database
+}
 
+
+//TODO: add chick
+//TODO: remove chick
 
 
 $( document ).ready(function() {
