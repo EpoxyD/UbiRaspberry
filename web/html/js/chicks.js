@@ -407,10 +407,11 @@ function saveEdit(chickid) {
     document.getElementById(chickid + "_img").setAttribute("src", imageModal.getAttribute("src"));
 
     //Clear input fields
-    var form = document.getElementById("myform");
+    var form = document.getElementById("editform");
     form.reset();
 
 
+    //TODO: Store new image in local folder
 
     //TODO: Store Chicks in database
 }
