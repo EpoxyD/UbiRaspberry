@@ -97,7 +97,7 @@ function init_sun_moon(){
                 var svg = d3.select("#svg");
                 svg.append('text')
                     .attr("x", svg.attr('width') * 0.12 )
-                    .attr("y", svg.attr('height'))
+                    .attr("y", svg.attr('height') * 0.99)
                     .text( ('0' + sunsetDT.getHours()).slice(-2) + 'h' + ('0' + sunsetDT.getMinutes()).slice(-2))
                     .attr("font-size", "14px")
                     .attr("font-family", 'sans-serif')
@@ -105,7 +105,7 @@ function init_sun_moon(){
 
                 svg.append('text')
                     .attr("x", svg.attr('width') * 0.88 )
-                    .attr("y", svg.attr('height'))
+                    .attr("y", svg.attr('height')* 0.99)
                     .text( ('0' + sunriseDT.getHours()).slice(-2) + 'h' + ('0' + sunriseDT.getMinutes()).slice(-2))
                     .attr("text-anchor", "end")
                     .attr("font-size", "14px")
@@ -119,7 +119,7 @@ function init_sun_moon(){
                 var svg = d3.select("#svg");
                 svg.append('text')
                     .attr("x", svg.attr('width') * 0.12 )
-                    .attr("y", svg.attr('height'))
+                    .attr("y", svg.attr('height')* 0.99)
                     .text( ('0' + sunriseDT.getHours()).slice(-2) + 'h' + ('0' + sunriseDT.getMinutes()).slice(-2))
                     .attr("font-size", "14px")
                     .attr("font-family", 'sans-serif')
@@ -127,7 +127,7 @@ function init_sun_moon(){
 
                 svg.append('text')
                     .attr("x", svg.attr('width') * 0.88 )
-                    .attr("y", svg.attr('height'))
+                    .attr("y", svg.attr('height')* 0.99)
                     .text( ('0' + sunsetDT.getHours()).slice(-2) + 'h' + ('0' + sunsetDT.getMinutes()).slice(-2))
                     .attr("text-anchor", "end")
                     .attr("font-size", "14px")
@@ -141,7 +141,7 @@ function init_sun_moon(){
                 var svg = d3.select("#svg");
                 svg.append('text')
                     .attr("x", svg.attr('width') * 0.12 )
-                    .attr("y", svg.attr('height'))
+                    .attr("y", svg.attr('height')* 0.9)
                     .text( ('0' + sunsetDT.getHours()).slice(-2) + 'h' + ('0' + sunsetDT.getMinutes()).slice(-2))
                     .attr("font-size", "14px")
                     .attr("font-family", 'sans-serif')
@@ -149,7 +149,7 @@ function init_sun_moon(){
 
                 svg.append('text')
                     .attr("x", svg.attr('width') * 0.88 )
-                    .attr("y", svg.attr('height'))
+                    .attr("y", svg.attr('height') * 0.9)
                     .text( ('0' + sunriseDT.getHours()).slice(-2) + 'h' + ('0' + sunriseDT.getMinutes()).slice(-2))
                     .attr("text-anchor", "end")
                     .attr("font-size", "14px")
@@ -438,12 +438,24 @@ function addChicks(card){
     newCard.style.visibility = '';
     newCard.style.display = '';
 
-    //TODO: Change chick properties and their id's
+    //TODO: Change chick image and its id
+
+    var new_name = newCard.querySelector("#demo_name");
+    new_name.setAttribute('id', 'chick' + insertID + '_name');
+    new_name.innerText = document.getElementById('addname').value;
+
+    var new_race = newCard.querySelector("#demo_race");
+    new_race.setAttribute('id', 'chick' + insertID + '_race');
+    new_race.innerText = document.getElementById('addrace').value;
+
+    var new_age = newCard.querySelector("#demo_age");
+    new_age.setAttribute('id', 'chick' + insertID + '_age');
+    new_age.innerText = document.getElementById('addage').value;
 
     wrapper.appendChild(newCard);
     wrapper.insertBefore(newCard, document.getElementById('addButton'));
 
-    //TODO: add chick
+    insertID ++;
 }
 
 
