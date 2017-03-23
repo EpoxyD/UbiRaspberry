@@ -34,18 +34,6 @@
 <div class="header">
     <div class="home-menu pure-menu pure-menu-horizontal pure-menu-fixed">
         <a class="pure-menu-heading" href="">Chick counter</a>
-<!--
-        <ul class="pure-menu-list">
-            <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-                <a href="#" id="menuLink1" class="pure-menu-link"></a>
-                <ul class="pure-menu-children">
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link">Email</a></li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link">Twitter</a></li>
-                    <li class="pure-menu-item"><a href="#" class="pure-menu-link">Tumblr Blog</a></li>
-                </ul>
-            </li>
-        </ul>
--->
     </div>
 </div>
 
@@ -69,7 +57,7 @@
             <div id="demoChick" class="pure-u-1 pure-u-md-1-4" style="visibility: hidden; display: none">
                 <div class="pricing-table pricing-table-free">
                     <div class="pricing-table-header">
-                        <img id="demo_img" class="chick-img" src="img/chick_1.jpg">
+                        <img id="demo_img" class="chick-img" src="img/no_chick.jpg">
                         </span>
                     </div>
 
@@ -88,93 +76,7 @@
                 </div>
             </div>
 
-            <div id="chick1" class="pure-u-1 pure-u-md-1-4">
-                <div class="pricing-table pricing-table-free">
-                    <div class="pricing-table-header">
-                        <img id="chick1_img" class="chick-img" src="img/chick_1.jpg">
-                    </span>
-                    </div>
 
-                    <ul class="pricing-table-list">
-                        <li><b id="chick1_name">Chicken Little</b></li>
-                        <li id="chick1_race">Race: ##</li>
-                        <li id="chick1_age">Age: ##</li>
-                    </ul>
-
-                    <div style="text-align: center;">
-                        <a href="#myModal" role="button" class="button-choose pure-button" data-toggle="modal" onclick="fillModal(this)">
-                            <i class="fa fa-pencil"></i> Edit
-                        </a>
-                        <button class="button-choose pure-button" style="border: 1px solid #ca3c3c" onclick="removeChicks(this)"><i class="fa fa-cutlery"></i> Remove</button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="chick2" class="pure-u-1 pure-u-md-1-4">
-                <div class="pricing-table pricing-table-free">
-                    <div class="pricing-table-header">
-                        <img id="chick2_img" class="chick-img" src="img/chick_2.png">
-                        </span>
-                    </div>
-
-                    <ul class="pricing-table-list">
-                        <li><b id="chick2_name">Marry Poopins</b></li>
-                        <li id="chick2_race">Race: ##</li>
-                        <li id="chick2_age">Age: ##</li>
-                    </ul>
-
-                    <div style="text-align: center;">
-                        <a href="#myModal" role="button" class="button-choose pure-button" data-toggle="modal" onclick="fillModal(this)">
-                            <i class="fa fa-pencil"></i> Edit
-                        </a>
-                        <button class="button-choose pure-button" style="border: 1px solid #ca3c3c" onclick="removeChicks(this)"><i class="fa fa-cutlery"></i> Remove</button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="chick3" class="pure-u-1 pure-u-md-1-4">
-                <div class="pricing-table pricing-table-free">
-                    <div class="pricing-table-header">
-                        <img id="chick3_img" class="chick-img" src="img/chick_3.jpg">
-                        </span>
-                    </div>
-
-                    <ul class="pricing-table-list">
-                        <li><b id="chick3_name">Happy Feet</b></li>
-                        <li id="chick3_race">Race: ##</li>
-                        <li id="chick3_age">Age: ##</li>
-                    </ul>
-
-                    <div style="text-align: center;">
-                        <a href="#myModal" role="button" class="button-choose pure-button" data-toggle="modal" onclick="fillModal(this)">
-                            <i class="fa fa-pencil"></i> Edit
-                        </a>
-                        <button class="button-choose pure-button" style="border: 1px solid #ca3c3c" onclick="removeChicks(this)"><i class="fa fa-cutlery"></i> Remove</button>
-                    </div>
-                </div>
-            </div>
-
-            <div id="chick4" class="pure-u-1 pure-u-md-1-4">
-                <div class="pricing-table pricing-table-free">
-                    <div class="pricing-table-header">
-                        <img id="chick4_img" class="chick-img" src="img/chick_4.jpg">
-                        </span>
-                    </div>
-
-                    <ul class="pricing-table-list">
-                        <li><b id="chick4_name">Tom</b></li>
-                        <li id="chick4_race">Race: ##</li>
-                        <li id="chick4_age">Age: ##</li>
-                    </ul>
-
-                    <div style="text-align: center;">
-                        <a href="#myModal" role="button" class="button-choose pure-button" data-toggle="modal" onclick="fillModal(this)">
-                            <i class="fa fa-pencil"></i> Edit
-                        </a>
-                        <button class="button-choose pure-button" style="border: 1px solid #ca3c3c" onclick="removeChicks(this)"><i class="fa fa-cutlery"></i> Remove</button>
-                    </div>
-                </div>
-            </div>
 
             <div id="addButton" class="pure-u-1 pure-u-md-2-4 is-center">
                 <a href="#addModal" data-toggle="modal" class="button-play pure-button" style="border-radius: 5px; margin-top: -30px; margin-bottom: 20px; border: 1px solid #1970a9; background: #1f8dd6;color: white; width: 50%"><i class="fa fa-plus"></i> Add</a>
@@ -299,7 +201,7 @@
         <div class="pure-u-1">
             <div class="pricing-table pricing-table-free" style="padding-bottom: 0">
                 <div class="pricing-table-header">
-                    <img id="addImage" class="chick-img" src="img/chick_1.jpg">
+                    <img id="addImage" class="chick-img" src="img/no_chick.jpg">
                     </span>
                 </div>
 

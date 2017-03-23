@@ -1,3 +1,70 @@
+/*
+ *  Initialize website
+ */
+
+$.getJSON("php/get_all_chicks.php",
+    function (result) {
+        console.log(result);
+        for (i = 0; i < result.length; i++) {
+            appendChick(result[i]);
+        }
+});
+
+function appendChick(chick) {
+    var demoCard = document.getElementById('demoChick');
+    var wrapper = demoCard.parentNode;
+    var newCard = demoCard.cloneNode(true);
+
+    newCard.setAttribute('id', 'chick' + chick.id);
+    newCard.style.visibility = '';
+    newCard.style.display = '';
+
+
+    var new_name = newCard.querySelector("#demo_name");
+    new_name.setAttribute('id', 'chick' + chick.id + '_name');
+    if (chick.name != null) {
+        new_name.innerText = chick.name;
+    }
+    else {
+        new_name.innerText = "Nameless Chick";
+    }
+
+
+    var new_race = newCard.querySelector("#demo_race");
+    new_race.setAttribute('id', 'chick' + chick.id + '_race');
+    if (chick.race != null) {
+        new_race.innerText = chick.race;
+    }
+    else {
+        new_race.innerText = "Race unknown";
+    }
+
+
+    var new_age = newCard.querySelector("#demo_age");
+    new_age.setAttribute('id', 'chick' + chick.id + '_age');
+    if (chick.age != null) {
+        new_age.innerText = chick.age;
+    }
+    else {
+        new_age.innerText = "Forever young";
+    }
+
+    var new_img = newCard.querySelector("#demo_img");
+    new_img.setAttribute('id', 'chick' + chick.id + '_img');
+    if (chick.imagepath != null && chick.imagepath != '') {
+        new_img.setAttribute('src', chick.imagepath);
+    }
+    else {
+        new_img.setAttribute('src', "img/no_chick.jpg");
+    }
+
+    wrapper.appendChild(newCard);
+    wrapper.insertBefore(newCard, document.getElementById('addButton'));
+}
+
+
+
+
 
 /*
  *  Function to play the song
@@ -417,18 +484,28 @@ function saveEdit(chickid) {
 }
 
 function removeChicks(button) {
-    id = button.parentNode.parentNode.parentNode.getAttribute("id");
+    var id = button.parentNode.parentNode.parentNode.getAttribute("id");
 
     $("#"+id).remove();
 
-    //TODO: remove chicks from db
+
+    $.getJSON("php/remove_chick.php",{
+            id: id.substr(5)
+        });
 }
 
 var insertID = 5;
 function addChicks(card){
-    console.log(card);
+    //TODO: add form validation on age (only ints)
 
-    //TODO: add to db and get insert ID
+    $.getJSON("php/add_chick.php",{
+        name: document.getElementById('addname').value,
+        race: document.getElementById('addrace').value,
+        age: document.getElementById('addage').value
+    },
+    function (result) {
+        console.log(result);
+    });
 
     var demoCard = document.getElementById('demoChick');
     var wrapper = demoCard.parentNode;
