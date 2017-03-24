@@ -26,6 +26,8 @@
 
     <script src="https://d3js.org/d3.v4.min.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+    <script src="js/dropzone.js"></script>
 </head>
 <body>
 
@@ -160,6 +162,14 @@
                     </span>
                 </div>
 
+                <div class="image_upload_div">
+                    <form action="php/upload.php" method="post" enctype="multipart/form-data">
+                        Select image to upload:
+                        <input type="file" name="fileToUpload" id="fileToUpload">
+                        <input type="submit" value="Upload Image" name="submit">
+                    </form>
+                </div>
+
                 <!--
                 <form action="php/upload.php" method="post" enctype="multipart/form-data">
                     Select image to upload:
@@ -173,7 +183,7 @@
                     <ul class="pricing-table-list">
                         <li><input id="name" type="text" placeholder="Name"></li>
                         <li><input id="race" type="text" placeholder="Race"></li>
-                        <li><input id="age" type="text" placeholder="Age"></li>
+                        <li><input id="age" type="number" placeholder="Age"></li>
                     </ul>
                 </form>
             </div>
@@ -210,7 +220,7 @@
                     <ul class="pricing-table-list">
                         <li><input id="addname" type="text" placeholder="Name"></li>
                         <li><input id="addrace" type="text" placeholder="Race"></li>
-                        <li><input id="addage" type="text" placeholder="Age"></li>
+                        <li><input id="addage" type="number" placeholder="Age"></li>
                     </ul>
                 </form>
             </div>
@@ -219,7 +229,7 @@
 
     <div class="modal-footer">
         <button class="pure-button" data-dismiss="modal" aria-hidden="true">Close</button>
-        <button class="pure-button pure-button-primary" data-dismiss="modal" onclick="addChicks(document.getElementById('add_modal'))">Submit</button>
+        <button class="pure-button pure-button-primary" data-dismiss="modal" onclick="addChicks()">Submit</button>
     </div>
 </div>
 

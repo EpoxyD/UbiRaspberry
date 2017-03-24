@@ -33,20 +33,20 @@ function appendChick(chick) {
     var new_race = newCard.querySelector("#demo_race");
     new_race.setAttribute('id', 'chick' + chick.id + '_race');
     if (chick.race != null) {
-        new_race.innerText = chick.race;
+        new_race.innerText = "Race: " +  chick.race;
     }
     else {
-        new_race.innerText = "Race unknown";
+        new_race.innerText = "Race: " +  "Race unknown";
     }
 
 
     var new_age = newCard.querySelector("#demo_age");
     new_age.setAttribute('id', 'chick' + chick.id + '_age');
     if (chick.age != null) {
-        new_age.innerText = chick.age;
+        new_age.innerText = "Age: " + chick.age;
     }
     else {
-        new_age.innerText = "Forever young";
+        new_age.innerText = "Age: " +  "Forever young";
     }
 
     var new_img = newCard.querySelector("#demo_img");
@@ -447,15 +447,14 @@ function fillModal(button) {
     var chick = chickPassport.getAttribute("id");
     id.innerHTML = chick;
 
-    name.placeholder = document.getElementById(chick + "_name").innerText;
-    race.placeholder = document.getElementById(chick + "_race").innerText;
-    age.placeholder = document.getElementById(chick + "_age").innerText;
+    name.value = document.getElementById(chick + "_name").innerText;
+    race.value = document.getElementById(chick + "_race").innerText.substr(6);
+    age.value = document.getElementById(chick + "_age").innerText.substr(5);
     image.setAttribute("src", document.getElementById(chick + "_img").getAttribute("src"));
 }
 
 function saveEdit(chickid) {
 
-    console.log(chickid);
     var imageModal = document.getElementById("image");
     var nameModal = document.getElementById("name");
     var raceModal = document.getElementById("race");
@@ -473,14 +472,22 @@ function saveEdit(chickid) {
 
     document.getElementById(chickid + "_img").setAttribute("src", imageModal.getAttribute("src"));
 
+    //TODO: Store new image in local folder and save the path
+
+    console.log(nameModal.value);
+
+    $.getJSON("php/edit_chick.php",{
+            name: nameModal.value,
+            race: raceModal.value,
+            age: ageModal.value,
+            imgPath: imageModal.getAttribute("src"),
+            id: chickid.substr(5)
+        });
+
+
     //Clear input fields
     var form = document.getElementById("editform");
     form.reset();
-
-
-    //TODO: Store new image in local folder
-
-    //TODO: Store Chicks in database
 }
 
 function removeChicks(button) {
@@ -494,9 +501,7 @@ function removeChicks(button) {
         });
 }
 
-var insertID = 5;
-function addChicks(card){
-    //TODO: add form validation on age (only ints)
+function addChicks(){
 
     $.getJSON("php/add_chick.php",{
         name: document.getElementById('addname').value,
@@ -504,35 +509,37 @@ function addChicks(card){
         age: document.getElementById('addage').value
     },
     function (result) {
-        console.log(result);
+        insertID = result[0];
+
+        var demoCard = document.getElementById('demoChick');
+        var wrapper = demoCard.parentNode;
+        var newCard = demoCard.cloneNode(true);
+
+        newCard.setAttribute('id', 'chick' + insertID);
+        newCard.style.visibility = '';
+        newCard.style.display = '';
+
+        //TODO: Change chick image and its id
+
+        var new_name = newCard.querySelector("#demo_name");
+        new_name.setAttribute('id', 'chick' + insertID + '_name');
+        new_name.innerText = document.getElementById('addname').value;
+
+        var new_race = newCard.querySelector("#demo_race");
+        new_race.setAttribute('id', 'chick' + insertID + '_race');
+        new_race.innerText = document.getElementById('addrace').value;
+
+        var new_age = newCard.querySelector("#demo_age");
+        new_age.setAttribute('id', 'chick' + insertID + '_age');
+        new_age.innerText = document.getElementById('addage').value;
+
+        wrapper.appendChild(newCard);
+        wrapper.insertBefore(newCard, document.getElementById('addButton'));
+
+        //Clear input fields
+        var form = document.getElementById("addform");
+        form.reset();
     });
-
-    var demoCard = document.getElementById('demoChick');
-    var wrapper = demoCard.parentNode;
-    var newCard = demoCard.cloneNode(true);
-
-    newCard.setAttribute('id', 'chick' + insertID);
-    newCard.style.visibility = '';
-    newCard.style.display = '';
-
-    //TODO: Change chick image and its id
-
-    var new_name = newCard.querySelector("#demo_name");
-    new_name.setAttribute('id', 'chick' + insertID + '_name');
-    new_name.innerText = document.getElementById('addname').value;
-
-    var new_race = newCard.querySelector("#demo_race");
-    new_race.setAttribute('id', 'chick' + insertID + '_race');
-    new_race.innerText = document.getElementById('addrace').value;
-
-    var new_age = newCard.querySelector("#demo_age");
-    new_age.setAttribute('id', 'chick' + insertID + '_age');
-    new_age.innerText = document.getElementById('addage').value;
-
-    wrapper.appendChild(newCard);
-    wrapper.insertBefore(newCard, document.getElementById('addButton'));
-
-    insertID ++;
 }
 
 
