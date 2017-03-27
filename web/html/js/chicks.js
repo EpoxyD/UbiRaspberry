@@ -438,7 +438,6 @@ function fillModal(button) {
 
     var modal = document.getElementById("modal");
 
-    var image = document.getElementById("image");
     var name = document.getElementById("name");
     var race = document.getElementById("race");
     var age = document.getElementById("age");
@@ -450,7 +449,20 @@ function fillModal(button) {
     name.value = document.getElementById(chick + "_name").innerText;
     race.value = document.getElementById(chick + "_race").innerText.substr(6);
     age.value = document.getElementById(chick + "_age").innerText.substr(5);
-    image.setAttribute("src", document.getElementById(chick + "_img").getAttribute("src"));
+
+    //Set img form chick id
+    document.getElementById("chick_id_input").value = chick.substr(5);
+
+    var dropImages = document.getElementsByClassName("dz-clickable");
+
+    for (var i = 0; i < dropImages.length; i++) {
+        try {
+            dropImages[i].style.cssText = "background: url(" + document.getElementById(chick + "_img").getAttribute("src") +") no-repeat center center;" + "background-size: 100% auto;";
+        }
+        catch(err) {
+            console.log(err);
+        }
+    }
 }
 
 function saveEdit(chickid) {
@@ -471,8 +483,6 @@ function saveEdit(chickid) {
     }
 
     document.getElementById(chickid + "_img").setAttribute("src", imageModal.getAttribute("src"));
-
-    //TODO: Store new image in local folder and save the path
 
     console.log(nameModal.value);
 
@@ -509,7 +519,8 @@ function addChicks(){
         age: document.getElementById('addage').value
     },
     function (result) {
-        insertID = result[0];
+        var insertID = result[0];
+        var imgPath = result[1];
 
         var demoCard = document.getElementById('demoChick');
         var wrapper = demoCard.parentNode;
@@ -518,8 +529,6 @@ function addChicks(){
         newCard.setAttribute('id', 'chick' + insertID);
         newCard.style.visibility = '';
         newCard.style.display = '';
-
-        //TODO: Change chick image and its id
 
         var new_name = newCard.querySelector("#demo_name");
         new_name.setAttribute('id', 'chick' + insertID + '_name');
@@ -532,6 +541,10 @@ function addChicks(){
         var new_age = newCard.querySelector("#demo_age");
         new_age.setAttribute('id', 'chick' + insertID + '_age');
         new_age.innerText = document.getElementById('addage').value;
+
+        var new_img = newCard.querySelector("#demo_img");
+        new_img.setAttribute('id', 'chick' + insertID + '_img');
+        new_img.setAttribute('src', imgPath);
 
         wrapper.appendChild(newCard);
         wrapper.insertBefore(newCard, document.getElementById('addButton'));

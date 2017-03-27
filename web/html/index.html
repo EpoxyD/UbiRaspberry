@@ -157,26 +157,12 @@
     <div id="modal" class="modal-body">
         <div class="pure-u-1">
             <div class="pricing-table pricing-table-free" style="padding-bottom: 0">
-                <div class="pricing-table-header">
-                    <img id="image" class="chick-img" src="img/chick_1.jpg">
-                    </span>
-                </div>
 
-                <div class="image_upload_div">
-                    <form action="php/upload.php" method="post" enctype="multipart/form-data">
-                        Select image to upload:
-                        <input type="file" name="fileToUpload" id="fileToUpload">
-                        <input type="submit" value="Upload Image" name="submit">
-                    </form>
-                </div>
 
-                <!--
-                <form action="php/upload.php" method="post" enctype="multipart/form-data">
-                    Select image to upload:
-                    <input type="file" name="fileToUpload" id="fileToUpload">
-                    <input type="submit" value="Upload Image" name="submit">
+                <form action="php/upload.php" class="dropzone">
+                    <input type="hidden" name="chick_id"  id="chick_id_input" value="5">
                 </form>
-                -->
+
 
                 <form id="editform" class="pure-form">
                     <p id="chickid" class="hide" >chickid</p>
@@ -210,10 +196,10 @@
     <div id="add_modal" class="modal-body">
         <div class="pure-u-1">
             <div class="pricing-table pricing-table-free" style="padding-bottom: 0">
-                <div class="pricing-table-header">
-                    <img id="addImage" class="chick-img" src="img/no_chick.jpg">
-                    </span>
-                </div>
+
+                <form action="php/upload.php" class="dropzone">
+                    <input type="hidden" name="chick_id" value="add">
+                </form>
 
                 <form id="addform" class="pure-form">
                     <p id="addchickid" class="hide" >chickid</p>

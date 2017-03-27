@@ -1,0 +1,14 @@
+#!/usr/bin/python
+
+import time
+import pifacedigitalio as p
+
+pfio = p.PiFaceDigital()
+
+p.init()
+
+pfio.leds[7].turn_on()
+
+while True:
+	print p.digital_read(0)
+	time.sleep(1)

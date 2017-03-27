@@ -2,10 +2,8 @@
 
 import pifacedigitalio
 
-# Set global variables
-chicks_amount   =   9   # total amount of chickens
-chicks_inside   =   0   # total amount of chickens currently in the coop
-
+CHICKS_TOTAL = 9
+CHICKS_INSIDE = 0
 
 def switch_pressed(event):
     global CHICKS_INSIDE
@@ -28,8 +26,7 @@ def switch_pressed(event):
         while pifacedigital.switches[1].value == 1:
             if pifacedigital.switches[0].value == 1:
                 #Chick went outside
-                if CHICKS_INSIDE > 0:
-                    CHICKS_INSIDE = CHICKS_INSIDE - 1
+                CHICKS_INSIDE = CHICKS_INSIDE - 1
 
                 print "CHICKEN WENT OUTSIDE: " + str(CHICKS_INSIDE)
 
@@ -44,21 +41,10 @@ def switch_unpressed(event):
     if event.pin_num == 1:
         BUTTON_0 = 0
 
-# Get the amount of chickens in the chicken coop
-def get_amount_of_chicks():
-    return chicks_amount
 
-# New chickens have arrived, or some have moved to the city. Update the number left in the coop
-def set_amount_of_chicks(amount):
-    global chicks_amount
-    chicks_amount = amount
 
-# Main program, call lots of functions in here, no business logic pls.
 if __name__ == "__main__":
-    print get_amount_of_chicks()
-    set_amount_of_chicks(12)
-    print get_amount_of_chicks()
-
+    
     pifacedigital = pifacedigitalio.PiFaceDigital()
 
     listener = pifacedigitalio.InputEventListener(chip=pifacedigital)
@@ -68,3 +54,4 @@ if __name__ == "__main__":
         listener.register(i, pifacedigitalio.IODIR_OFF, switch_unpressed)
 
     listener.activate()
+

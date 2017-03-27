@@ -28,7 +28,6 @@ if (isset($_GET['imgPath'])) {
     $imgPath = $_GET['imgPath'];
 }
 
-
 /*****************************
  *       Connect to db       *
  *****************************/
@@ -75,12 +74,30 @@ if(!$result) {
 
 $newChickId = $mysqli->insert_id;
 
+/******************************
+ *         store Img          *
+ ******************************/
+
+rename("/var/www/html/uploads/chick_add.png", "/var/www/html/uploads/chick_" . $newChickId . ".png");
+$imgPath = "uploads/chick_" . $newChickId . ".png";
+
+$sql = "UPDATE ChickCounter.chickens SET imagepath = '$imgPath' WHERE id = '$newChickId';";
+$result = $mysqli->query($sql);
+
+if(!$result) {
+    echo "Error: Failed to execute query: \n";
+    echo "Query: " . $sql . "\n";
+    echo "Errno: " . $mysqli->errno . "\n";
+    echo "Error: " . $mysqli->error . "\n";
+    exit;
+}
 
 /******************************
  *           Succes           *
  ******************************/
 
 $array[] = $newChickId;
+$array[] = $imgPath;
 $array[] = array(
     "status" => "succes"
 );

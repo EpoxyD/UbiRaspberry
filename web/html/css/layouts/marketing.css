@@ -938,11 +938,21 @@ a.pure-button-primary {
     background: white;
     padding: 20px 20px; }
 .dropzone.dz-clickable {
-    cursor: pointer; }
+    cursor: pointer;
+    background: url("../../img/no_chick.jpg") no-repeat center center;
+    background-size: 100% auto;
+}
 .dropzone.dz-clickable * {
     cursor: default; }
 .dropzone.dz-clickable .dz-message, .dropzone.dz-clickable .dz-message * {
-    cursor: pointer; }
+    color: white;
+    cursor: pointer;
+}
+
+.dz-message{
+    background-color: rgba(0,0,0,0.5);
+}
+
 .dropzone.dz-started .dz-message {
     display: none; }
 .dropzone.dz-drag-hover {

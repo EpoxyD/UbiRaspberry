@@ -2,14 +2,13 @@
 
 import sys
 import threading
-
+import time
 import pifacedigitalio
 
 # Set global variables
 chicks_amount   =   9   # total amount of chickens
 chicks_inside   =   0   # total amount of chickens currently in the coop
 rainbow         =   False
-exit_barrier = threading.Barrier(2)
 
 def switch_pressed(event):
     global chicks_inside
@@ -51,13 +50,6 @@ def set_amount_of_chicks(amount):
     global chicks_amount
     chicks_amount = amount
 
-def led_enable(event):
-    return 0
-
-def deactivate_and_exit(event):
-    global exit_barrier
-    exit_barrier.wait()
-
 # Main program, call lots of functions in here, no business logic pls.
 if __name__ == "__main__":
     print(get_amount_of_chicks())
@@ -68,16 +60,11 @@ if __name__ == "__main__":
 
     listener = pifacedigitalio.InputEventListener(chip=pfd)
 
-    #listener.register(0, pifacedigitalio.IODIR_ON, switch_pressed)
-    #listener.register(1, pifacedigitalio.IODIR_OFF, switch_unpressed)
-    listener.register(2,pifacedigitalio.IODIR_ON,led_enable)
-    listener.register(3,pifacedigitalio.IODIR_FALLING_EDGE, deactivate_and_exit)
-
-    pfd.leds[0].toggle()
+    for i in range(4):
+        listener.register(i, pifacedigitalio.IODIR_ON, switch_pressed)
+        listener.register(i, pifacedigitalio.IODIR_OFF, switch_unpressed)
 
     listener.activate()
-    exit_barrier.wait()  # program will wait here until exit_barrier releases
-    listener.deactivate()
-    sys.exit()
+
 
 
