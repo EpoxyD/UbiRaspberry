@@ -53,7 +53,7 @@ if ($mysqli->connect_errno) {
 }
 
 /*****************************
- *        Set chick        *
+ *         Set chick         *
  *****************************/
 
 $sql = "INSERT INTO ChickCounter.chickens (name, race, age, imagepath)

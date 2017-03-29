@@ -148,9 +148,6 @@ function init_sun_moon(){
         beforeSend: function() {
 
         },
-        complete: function() {
-
-        },
         success: function(resultData) {
             var todaySunRise = new Date(resultData.daily.data[0].sunriseTime*1000);
             var todaySunSet = new Date(resultData.daily.data[0].sunsetTime*1000);

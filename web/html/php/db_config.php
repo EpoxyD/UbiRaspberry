@@ -6,5 +6,5 @@
  * Time: 10:33
  */
 
-$host = 'localhost'; $user = 'root'; $password = 'root'; $db = 'ChickCounter'; //pi
-//$host = '192.168.0.104'; $user = 'root'; $password = 'root'; $db = 'ChickCounter'; //local
+//$host = 'localhost'; $user = 'root'; $password = 'root'; $db = 'ChickCounter'; //pi
+$host = '192.168.0.104'; $user = 'root'; $password = 'root'; $db = 'ChickCounter'; //local

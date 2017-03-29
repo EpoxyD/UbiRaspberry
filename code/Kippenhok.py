@@ -51,11 +51,11 @@ def gate_closed(event):
 
 # The gate opens now
 def gate_action_open(event):
-    print("The gat is opening...")
+    print("The gate is opening...")
 
 # The gate closes  now
 def gate_action_close(event):
-    print("The gat is closing...")
+    print("The gate is closing...")
 
 # Main program, call lots of functions in here, no business logic pls.
 if __name__ == "__main__":

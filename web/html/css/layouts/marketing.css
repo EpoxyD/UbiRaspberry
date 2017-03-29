@@ -449,6 +449,21 @@ a.pure-button-primary {
     margin-bottom: 5px;
 }
 
+.button-motor {
+    border: 1px solid #ccc;
+    background: #fff;
+    color: #333;
+    border-radius: 2em;
+    font-weight: lighter;
+    position: relative;
+    bottom: -1em;
+    font-size: 50%;
+
+    display:block;
+    margin:0 auto;
+    margin-bottom: 5px;
+}
+
 .information-head {
     color: black;
     font-weight: 500;
@@ -484,6 +499,18 @@ a.pure-button-primary {
     font-size: 30px;
 }
 
+#clockdiv > .motordiv{
+    margin-top: -10px;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    border-radius: 5px;
+    background: none;
+    display: inline-block;
+    width: 38%;
+}
+
 #clockdiv > div{
     padding: 10px;
     border-radius: 5px;
@@ -499,6 +526,8 @@ a.pure-button-primary {
     width: 100%;
     text-align: center;
 }
+
+
 
 .smalltext{
     padding-top: 5px;
