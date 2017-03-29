@@ -148,6 +148,9 @@ function init_sun_moon(){
         beforeSend: function() {
 
         },
+        complete: function() {
+
+        },
         success: function(resultData) {
             var todaySunRise = new Date(resultData.daily.data[0].sunriseTime*1000);
             var todaySunSet = new Date(resultData.daily.data[0].sunsetTime*1000);
@@ -553,9 +556,22 @@ function addChicks(){
 }
 
 
-
 $( document ).ready(function() {
     init_svg();
     init_sun_moon();
     init_recipe();
+
+    $(document.getElementById('buttonopen')).click(function () {
+        $.ajax({
+            type: "GET",
+            url: "http://" + String(location.host) + ":8000/?output_port=0xAA",
+        });
+    });
+
+    $(document.getElementById('buttonclose')).click(function () {
+        $.ajax({
+            type: "GET",
+            url: "http://" + String(location.host) + ":8000/?output_port=0xAB"
+        });
+    });
 });
