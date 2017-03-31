@@ -14,11 +14,12 @@ print("\----------------------------------------------------------/")
 #On pi
 #conn = pymysql.connect(host='localhost', user='root', passwd='root', db='ChickCounter')
 #From laptop
-conn = pymysql.connect(host='192.168.0.104', user='root', passwd='root', db='ChickCounter')
+conn = pymysql.connect(host='192.168.1.10', user='root', passwd='root', db='ChickCounter')
 
 cur = conn.cursor()
-cur.execute("SELECT COUNT(*) FROM ChickCounter.chickens")
+cur.execute("SELECT * FROM ChickCounter.chickens")
 total_chicks = 0
+print(cur.rowcount)
 for response in cur:
     total_chicks = total_chicks + 1
     print(response)

@@ -4,7 +4,6 @@
 
 $.getJSON("php/get_all_chicks.php",
     function (result) {
-        console.log(result);
         for (i = 0; i < result.length; i++) {
             appendChick(result[i]);
         }
@@ -482,7 +481,8 @@ function saveEdit(chickid) {
         document.getElementById(chickid + "_age").innerText = "Age: " + ageModal.value;
     }
 
-    document.getElementById(chickid + "_img").setAttribute("src", imageModal.getAttribute("src"));
+    var imgPath = "uploads/" + "chick_" + chickid.substr(5) +  ".png";
+    document.getElementById(chickid + "_img").setAttribute("src", imgPath);
 
     console.log(nameModal.value);
 
@@ -490,7 +490,7 @@ function saveEdit(chickid) {
             name: nameModal.value,
             race: raceModal.value,
             age: ageModal.value,
-            imgPath: imageModal.getAttribute("src"),
+            imgPath: imgPath,
             id: chickid.substr(5)
         });
 
@@ -505,13 +505,24 @@ function removeChicks(button) {
 
     $("#"+id).remove();
 
-
     $.getJSON("php/remove_chick.php",{
             id: id.substr(5)
         });
+
+
+    $.ajax({
+        type: "GET",
+        url: "http://" + String(location.host) + ":5000/change-count/remove"
+    });
 }
 
 function addChicks(){
+
+    $.ajax({
+        type: "GET",
+        url: "http://" + String(location.host) + ":5000/change-count/add"
+    });
+
 
     $.getJSON("php/add_chick.php",{
         name: document.getElementById('addname').value,
@@ -553,25 +564,79 @@ function addChicks(){
         var form = document.getElementById("addform");
         form.reset();
     });
+
+}
+
+function httpGetAsync(theUrl, callback)
+{
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            callback(xmlHttp.responseText);
+    };
+    xmlHttp.open("GET", theUrl, true); // true for asynchronous 
+    xmlHttp.send(null);
 }
 
 
-$( document ).ready(function() {
+$( document ).ready(function() {    
     init_svg();
     init_sun_moon();
     init_recipe();
-
+    getChicksInside();
+    
     $(document.getElementById('buttonopen')).click(function () {
         $.ajax({
             type: "GET",
-            url: "http://" + String(location.host) + ":8000/?output_port=0xAA",
+            url: "http://" + String(location.host) + ":5000/toggle-gate/open"
         });
     });
 
     $(document.getElementById('buttonclose')).click(function () {
-        $.ajax({
-            type: "GET",
-            url: "http://" + String(location.host) + ":8000/?output_port=0xAB"
-        });
+        var inside = document.getElementById('inside').innerText.substr(15);
+        var total = document.getElementsByClassName("chick").length - 1;
+
+        if(inside != total) {
+            var r = confirm("Some chicks are still outside. Close the gate anyway?");
+            if (r == true) {
+                $.ajax({
+                    type: "GET",
+                    url: "http://" + String(location.host) + ":5000/toggle-gate/close"
+                });
+            }
+        }
+        else {
+            $.ajax({
+                type: "GET",
+                url: "http://" + String(location.host) + ":5000/toggle-gate/close"
+            });
+        }
     });
 });
+
+function getChicksInside(){
+
+    jQuery.ajax({
+        url: "http://" + String(location.host) + ":5000/total-chicks-inside",
+        type: "GET",
+        dataType: "jsonp",
+        crossDomain: true,
+        jsonp: "callback",
+        complete: function() {
+            setTimeout( function timer(){
+                getChicksInside();
+            }, 1000 );
+        },
+        success: function(result) {
+            var inside = document.getElementById('inside');
+
+            inside.innerText= "Chicks inside: " + result["TotalChicksInside"];
+        }
+        ,
+        error : function(jqXHR, textStatus, errorThrown) {
+            //alert('Error Message: '+textStatus);
+            //alert('HTTP Error: '+errorThrown);
+        }
+    });
+
+}

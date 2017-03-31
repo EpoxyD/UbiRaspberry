@@ -7,4 +7,4 @@
  */
 
 //$host = 'localhost'; $user = 'root'; $password = 'root'; $db = 'ChickCounter'; //pi
-$host = '192.168.0.104'; $user = 'root'; $password = 'root'; $db = 'ChickCounter'; //local
+$host = '192.168.1.10'; $user = 'root'; $password = 'root'; $db = 'ChickCounter'; //local
